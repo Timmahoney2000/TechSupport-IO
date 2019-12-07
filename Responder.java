@@ -33,7 +33,7 @@ public class Responder
     public Responder()
     {
         responseMap = new HashMap<>();
-        defaultResponses = new ArrayList<>();
+        defaultResponses = new ArrayList<String>();
         fillResponseMap();
         fillDefaultResponses();
         randomGenerator = new Random();
@@ -49,12 +49,44 @@ public class Responder
     {
         Iterator<String> it = words.iterator();
         while(it.hasNext()) {
-            String word = it.next();
-            String response = responseMap.get(word);
+            String word;
+            String response;
+            String line;
+            BufferedReader reader;
+            try
+            {
+                reader = new BufferedReader(new FileReader("responses.txt"));
+                Iterator<String> it = words.iterator();
+                while(it.hasNext())
+                {
+                    word = it.next();
+                    line = reader.readLine();
+                    while(line != null)
+                    {
+                        if(line.trim().equalsIgnoreCase(word.trim()))
+                        {
+                            response = reader.readLine();
             if(response != null) {
                 return response;
             }
         }
+        else
+        {
+            reader.readLine();
+        }
+        line = reader.readLine
+    }
+}
+reader.close();
+}
+catch(FileNotFoundException e)
+{
+    System.err.println("Unable to open " + FILE_OF_DEFAULT_RESPONSES);
+}
+catch(IOException e)
+{
+    System.err.println("A problem was encountered reading " + FILE_OF_DEFAULT_RESPONSES);
+}
         // If we get here, none of the words from the input line was recognized.
         // In this case we pick one of our default responses (what we say when
         // we cannot think of anything else to say...)
@@ -155,3 +187,4 @@ public class Responder
         return defaultResponses.get(index);
     }
 }
+
